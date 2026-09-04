@@ -1,5 +1,6 @@
 {
   "name": "homeward",
+  "description": "Lost and found board for pets, post missing animals with photos and locations, web plus native mobile/desktop apps.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
