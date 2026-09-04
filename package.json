@@ -1,7 +1,13 @@
 {
   "name": "homeward",
+  "license": "MIT",
   "description": "Lost and found board for pets, post missing animals with photos and locations, web plus native mobile/desktop apps.",
-  "keywords": ["lost-and-found", "pets", "community", "cross-platform"],
+  "keywords": [
+    "lost-and-found",
+    "pets",
+    "community",
+    "cross-platform"
+  ],
   "version": "0.1.0",
   "private": true,
   "scripts": {
