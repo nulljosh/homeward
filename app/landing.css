@@ -24,6 +24,13 @@
 }
 .lp .hero .container { position: relative; z-index: 2; }
 
+/* pinned to the real page edge, not the centered 62rem content column */
+.lp .topbar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.25rem 1.5rem;
+}
+
 /* the wall: notices drifting past, the way a board fills up */
 .lp .hero-wall {
   position: absolute; inset: -8%; z-index: 0;
@@ -93,7 +100,6 @@
 .lp .closing { padding: 4rem 0 4.5rem; text-align: center; background: var(--bg2); border-top: 1px solid var(--border); }
 .lp .closing p { color: var(--text2); max-width: 32rem; margin: 0 auto; }
 .lp footer { padding: 2.5rem 0 3.5rem; text-align: center; font-size: 0.9rem; color: var(--text2); }
-.lp .topbar { position: relative; z-index: 3; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-top: 1.25rem; }
 .lp .topbar .name { font-weight: 700; }
 .lp .topbar a { color: var(--link); }
 .lp .topbar a:hover { color: var(--link-hover); }

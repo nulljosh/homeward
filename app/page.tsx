@@ -90,11 +90,11 @@ export default function Landing() {
     <div className="lp">
       <section className="hero">
         <HeroWall />
+        <div className="topbar">
+          <span className="name">homeward</span>
+          <span><Link href="/board">browse the board</Link> · <AuthBar /></span>
+        </div>
         <div className="container">
-          <div className="topbar">
-            <span className="name">homeward</span>
-            <span><Link href="/board">browse the board</Link> · <AuthBar /></span>
-          </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="hero-icon" src="/icon.svg" alt="Homeward icon" width={88} height={88} />
           <h1>A lost pet doesn&apos;t have time for a signup form.</h1>
