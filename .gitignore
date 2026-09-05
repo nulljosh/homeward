@@ -7,3 +7,4 @@ kmp/.gradle/
 kmp/build/
 kmp/*/build/
 kmp/local.properties
+.build/

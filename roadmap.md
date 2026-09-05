@@ -125,3 +125,6 @@ instead of the board. Both fixed.
       workflow only uploads Actions artifacts, which need a login to download.
       For public download links it needs a release step and a
       `homeward-native-v*` tag.
+
+## TUI pilot (2026-09-05)
+- `homeward-tui` SwiftPM target (SwiftTUI). `swift build && ./.build/debug/homeward-tui` lists active listings via plain URLSession against Supabase PostgREST (anon key, RLS-guarded, public by design — no Supabase SDK dependency pulled in for one read). Needs a real TTY.
