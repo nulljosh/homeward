@@ -178,8 +178,9 @@ export default function Landing() {
               <h3>Android, Windows, Linux</h3>
               <p>
                 A real installable app, not a bookmark. One Kotlin/Compose codebase built
-                into an APK, an MSI and a DEB. Downloads land with the first release.
+                into an APK, an MSI and a DEB.
               </p>
+              <a href="https://github.com/nulljosh/homeward/releases/latest" target="_blank" rel="noopener">Download from GitHub &rarr;</a>
             </div>
           </div>
         </div>
