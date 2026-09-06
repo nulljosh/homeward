@@ -1,6 +1,6 @@
 # Homeward Technical Whitepaper
 
-**v1.0** | August 2026
+**v0.1.0** | August 2026
 
 A pet goes missing. The neighbourhood should know in minutes.
 
