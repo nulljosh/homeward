@@ -128,4 +128,3 @@ instead of the board. Both fixed.
 
 ## TUI pilot (2026-09-05)
 - `homeward-tui` SwiftPM target (SwiftTUI). `swift build && ./.build/debug/homeward-tui` lists active listings via plain URLSession against Supabase PostgREST (anon key, RLS-guarded, public by design — no Supabase SDK dependency pulled in for one read). Needs a real TTY.
-- [ ] architecture.svg missing — sibling apps have one, this doesn't (project-sync 2026-09-05)
