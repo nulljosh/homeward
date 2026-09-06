@@ -177,7 +177,7 @@ export default function Landing() {
             <div className="feature">
               <h3>Android, Windows, Linux</h3>
               <p>
-                A real installable app, not a bookmark — one Kotlin/Compose codebase built
+                A real installable app, not a bookmark. One Kotlin/Compose codebase built
                 into an APK, an MSI and a DEB. Downloads land with the first release.
               </p>
             </div>
