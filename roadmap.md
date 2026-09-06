@@ -114,10 +114,7 @@ instead of the board. Both fixed.
   icon would be better but is cosmetic.
 
 ## Native Windows/Linux/Android (started 2026-08-30)
-- [x] CI release workflow (windows + ubuntu runners) to produce the `.msi` and
-      `.deb`, they cannot be built on the Mac.
 - [ ] Signed release APK + a keystore, then a Play listing.
-- [x] Install card links to the GitHub releases page (repo made public 2026-09-06, native-v1.0.0 release with msi/deb/apk from CI).
 - [ ] Posting from the native apps (photo upload + edit-token round trip); it
       currently deep-links to the web form.
 - [ ] CI run 33364105059 was still building the MSI/DEB/APK when the session
