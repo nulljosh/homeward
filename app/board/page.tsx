@@ -9,6 +9,7 @@ export default function Home() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [filter, setFilter] = useState<"all" | "lost" | "found">("all");
   const [query, setQuery] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     supabase
@@ -17,7 +18,17 @@ export default function Home() {
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .then(({ data }) => setListings((data as Listing[]) ?? []));
+    supabase.auth.getSession().then(({ data }) => setLoggedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setLoggedIn(!!session));
+    return () => sub.subscription.unsubscribe();
   }, []);
+
+  async function markFound(id: string) {
+    const { data } = await supabase.rpc("resolve_listing", { p_id: id }).single();
+    if (!data) return;
+    setListings((prev) => prev.filter((l) => l.id !== id));
+    supabase.functions.invoke("notify-found", { body: { listingId: id } });
+  }
 
   const filtered = listings.filter((l) => {
     if (filter !== "all" && l.type !== filter) return false;
@@ -73,6 +84,14 @@ export default function Home() {
               <span className="text-zinc-500">— {l.species}, {l.color}</span>
               <span className="text-zinc-400 ml-auto">{l.last_seen_location}</span>
             </Link>
+            {loggedIn && (
+              <button
+                onClick={() => markFound(l.id)}
+                className="mt-1 text-xs border border-zinc-300 rounded px-2 py-0.5 text-zinc-600 hover:border-[#2ECC40] hover:text-[#2ECC40]"
+              >
+                mark found
+              </button>
+            )}
           </li>
         ))}
         {filtered.length === 0 && (
