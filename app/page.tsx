@@ -1,10 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { supabase, Listing } from "@/lib/supabase";
 import AuthBar from "@/lib/AuthBar";
 import "./landing.css";
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Reveals a section once it scrolls into view; always visible under reduced motion.
+function useRevealOnScroll<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(prefersReducedMotion());
+
+  useEffect(() => {
+    if (prefersReducedMotion() || !ref.current || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+
+  return [ref, inView] as const;
+}
 
 // Modelled on the real posters seeded on the board — the first three are the
 // actual neighbourhood cases, the rest is generic filler so the wall stays full.
@@ -35,7 +61,7 @@ const SAMPLES: [string, string, string][] = [
   ["found", "calico cat", "Hastings-Sunrise"],
 ];
 
-function HeroWall() {
+function HeroWall({ parallaxRef }: { parallaxRef: RefObject<HTMLDivElement | null> }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,11 +96,20 @@ function HeroWall() {
     }
   }, []);
 
-  return <div className="hero-wall" ref={ref} aria-hidden="true" />;
+  return (
+    <div ref={parallaxRef} aria-hidden="true">
+      <div className="hero-wall" ref={ref} />
+    </div>
+  );
 }
 
 export default function Landing() {
   const [recent, setRecent] = useState<Listing[]>([]);
+  const wallRef = useRef<HTMLDivElement>(null);
+  const [recentRef, recentIn] = useRevealOnScroll<HTMLElement>();
+  const [featuresRef, featuresIn] = useRevealOnScroll<HTMLElement>();
+  const [installRef, installIn] = useRevealOnScroll<HTMLElement>();
+  const [closingRef, closingIn] = useRevealOnScroll<HTMLElement>();
 
   useEffect(() => {
     supabase
@@ -86,10 +121,26 @@ export default function Landing() {
       .then(({ data }) => setRecent((data as Listing[]) ?? []));
   }, []);
 
+  // Parallax: the hero wall of listing snippets drifts slower than the page scrolls.
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        if (wallRef.current) wallRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="lp">
       <section className="hero">
-        <HeroWall />
+        <HeroWall parallaxRef={wallRef} />
         <div className="topbar">
           <span className="name">homeward</span>
           <span><Link href="/board">browse the board</Link> · <AuthBar /></span>
@@ -110,7 +161,7 @@ export default function Landing() {
       </section>
 
       {recent.length > 0 && (
-        <section className="recent">
+        <section className={`recent reveal${recentIn ? " in-view" : ""}`} ref={recentRef}>
           <div className="container" style={{ maxWidth: "44rem", paddingTop: "3rem" }}>
             <h2 style={{ marginBottom: "1.25rem" }}>On the board right now</h2>
             <ul>
@@ -129,7 +180,7 @@ export default function Landing() {
         </section>
       )}
 
-      <section className="features">
+      <section className={`features reveal${featuresIn ? " in-view" : ""}`} ref={featuresRef}>
         <div className="container">
           <h2>How it works</h2>
           <div className="grid">
@@ -158,7 +209,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="features" style={{ paddingTop: 0 }}>
+      <section className={`features reveal${installIn ? " in-view" : ""}`} style={{ paddingTop: 0 }} ref={installRef}>
         <div className="container">
           <h2>Install it anywhere</h2>
           <div className="grid">
@@ -186,7 +237,7 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="closing">
+      <section className={`closing reveal${closingIn ? " in-view" : ""}`} ref={closingRef}>
         <div className="container">
           <h2 style={{ marginBottom: "1rem" }}>Free, and staying that way</h2>
           <p>
