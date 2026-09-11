@@ -27,6 +27,7 @@
 		8A2A28E516D3AD78FB6BC51C /* ListingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingsView.swift; sourceTree = "<group>"; };
 		902A9249165630047FD32B25 /* SupabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseClient.swift; sourceTree = "<group>"; };
 		A76534E5F631725B66A25FFF /* HomewardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomewardApp.swift; sourceTree = "<group>"; };
+		AE41407D40D6EC0B5BB25AA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B458715F66F2285D7BBB1E21 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		E2E8ACB97FB12DFBA74B6B14 /* PostListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListingView.swift; sourceTree = "<group>"; };
 		F030B689A71B5E529528FA80 /* ListingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingStore.swift; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 				7382A36040C4DF3413ADC9D2 /* Assets.xcassets */,
 				B458715F66F2285D7BBB1E21 /* AuthView.swift */,
 				A76534E5F631725B66A25FFF /* HomewardApp.swift */,
+				AE41407D40D6EC0B5BB25AA7 /* Info.plist */,
 				37682F5D297C953EF2B7FB9E /* Listing.swift */,
 				53495AD3F5646C9A109E0B8A /* ListingDetailView.swift */,
 				F030B689A71B5E529528FA80 /* ListingStore.swift */,
@@ -291,6 +293,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QMM486NPYC;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Homeward/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Homeward;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To attach a photo of the pet to your listing";
@@ -321,6 +324,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QMM486NPYC;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Homeward/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Homeward;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSCameraUsageDescription = "To attach a photo of the pet to your listing";

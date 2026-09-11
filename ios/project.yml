@@ -16,6 +16,12 @@ targets:
         com.apple.security.app-sandbox: true
         com.apple.security.network.client: true
         com.apple.security.files.user-selected.read-only: true
+        com.apple.developer.applesignin: [Default]
+    info:
+      path: Homeward/Info.plist
+      properties:
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [homeward]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.nulljosh.homeward

@@ -1,3 +1,5 @@
+import AuthenticationServices
+import CryptoKit
 import SwiftUI
 import Supabase
 
@@ -14,6 +16,9 @@ struct AuthBar: View {
                     Button("Log out", role: .destructive) {
                         Task { try? await supabase.auth.signOut() }
                     }
+                    Button("Delete account", role: .destructive) {
+                        Task { await deleteAccount() }
+                    }
                 }
                 .font(.caption)
             } else {
@@ -29,6 +34,18 @@ struct AuthBar: View {
         }
         .sheet(isPresented: $showingSheet) { AuthSheet() }
     }
+
+    /// Calls the shared `delete-account` Edge Function on the spark Supabase project,
+    /// which uses the service-role key to delete the authenticated user server-side
+    /// (the anon-key client SDK has no permission to delete its own auth user).
+    private func deleteAccount() async {
+        guard let session = try? await supabase.auth.session else { return }
+        var request = URLRequest(url: URL(string: "https://tjsxsqlxjmanwvmywwvw.supabase.co/functions/v1/delete-account")!)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(session.accessToken)", forHTTPHeaderField: "Authorization")
+        _ = try? await URLSession.shared.data(for: request)
+        try? await supabase.auth.signOut()
+    }
 }
 
 private struct AuthSheet: View {
@@ -38,7 +55,9 @@ private struct AuthSheet: View {
     @State private var password = ""
     @State private var isRegister = false
     @State private var error: String?
+    @State private var notice: String?
     @State private var submitting = false
+    @State private var appleNonce = ""
 
     var body: some View {
         NavigationStack {
@@ -49,12 +68,35 @@ private struct AuthSheet: View {
                     .textInputAutocapitalization(.never)
                 SecureField("Password", text: $password)
                     .textContentType(isRegister ? .newPassword : .password)
+                if !isRegister {
+                    Button("Forgot password?") { Task { await resetPassword() } }
+                        .font(.caption)
+                        .disabled(email.isEmpty)
+                }
                 if let error { Text(error).foregroundStyle(.red).font(.caption) }
+                if let notice { Text(notice).foregroundStyle(.secondary).font(.caption) }
                 Button(isRegister ? "Have an account? Log in" : "Need an account? Register") {
                     isRegister.toggle()
                     error = nil
                 }
                 .font(.caption)
+
+                Section {
+                    SignInWithAppleButton(.signIn) { request in
+                        appleNonce = Self.randomNonce()
+                        request.requestedScopes = [.email]
+                        request.nonce = Self.sha256(appleNonce)
+                    } onCompletion: { result in
+                        Task { await signInWithApple(result: result) }
+                    }
+                    .signInWithAppleButtonStyle(.black)
+                    .frame(height: 44)
+
+                    Button { Task { await signInWithGoogle() } } label: {
+                        Text("Continue with Google").frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                }
             }
             .navigationTitle(isRegister ? "Register" : "Log in")
             .toolbar {
@@ -81,5 +123,56 @@ private struct AuthSheet: View {
             self.error = error.localizedDescription
         }
         submitting = false
+    }
+
+    private func resetPassword() async {
+        error = nil; notice = nil
+        do {
+            try await supabase.auth.resetPasswordForEmail(email, redirectTo: URL(string: "https://pets.heyitsmejosh.com/reset-password"))
+            notice = "Check your email for a reset link."
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    private func signInWithApple(result: Result<ASAuthorization, Error>) async {
+        error = nil
+        do {
+            let auth = try result.get()
+            guard let cred = auth.credential as? ASAuthorizationAppleIDCredential,
+                  let tokenData = cred.identityToken,
+                  let token = String(data: tokenData, encoding: .utf8) else {
+                throw URLError(.badServerResponse)
+            }
+            _ = try await supabase.auth.signInWithIdToken(credentials: .init(provider: .apple, idToken: token, nonce: appleNonce))
+            dismiss()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    /// `homeward://` must stay in the Supabase project's uri_allow_list and in
+    /// CFBundleURLTypes, or the callback lands nowhere.
+    private func signInWithGoogle() async {
+        error = nil
+        do {
+            try await supabase.auth.signInWithOAuth(provider: .google, redirectTo: URL(string: "homeward://"))
+            dismiss()
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    private static func randomNonce(length: Int = 32) -> String {
+        let charset = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var bytes = [UInt8](repeating: 0, count: length)
+        if SecRandomCopyBytes(kSecRandomDefault, length, &bytes) != errSecSuccess {
+            bytes = (0..<length).map { _ in UInt8.random(in: 0...255) }
+        }
+        return String(bytes.map { charset[Int($0) % charset.count] })
+    }
+
+    private static func sha256(_ input: String) -> String {
+        SHA256.hash(data: Data(input.utf8)).compactMap { String(format: "%02x", $0) }.joined()
     }
 }
