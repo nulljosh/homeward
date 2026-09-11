@@ -47,6 +47,7 @@ struct ListingsView: View {
                 ToolbarItem {
                     Button("Post", systemImage: "plus") { showingPost = true }
                 }
+                ToolbarItem { AuthBar() }
             }
         } detail: {
             if let selection {

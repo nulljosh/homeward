@@ -24,6 +24,7 @@ fun BoardScreen(client: ListingsClient = ListingsClient(), openWeb: (String) -> 
     var query by remember { mutableStateOf("") }
     var kind by remember { mutableStateOf(Kind.ALL) }
     var selected by remember { mutableStateOf<Listing?>(null) }
+    var session by remember { mutableStateOf<Session?>(null) }
 
     LaunchedEffect(Unit) {
         listings = client.active()
@@ -34,7 +35,10 @@ fun BoardScreen(client: ListingsClient = ListingsClient(), openWeb: (String) -> 
 
     Row(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(Modifier.weight(1f).padding(20.dp)) {
-            Text("Homeward", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                Text("Homeward", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+                AuthBar(session, onSession = { session = it })
+            }
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(
                 value = query,
