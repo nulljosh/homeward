@@ -1,6 +1,6 @@
 # Homeward, project notes
 
-Craigslist-style lost/found pet board: Next.js web app + SwiftUI iOS app sharing one Supabase backend. No auth, posts are public, editable only via a UUID `edit_token` link generated at post time.
+Craigslist-style lost/found pet board: Next.js web app + SwiftUI iOS/macOS app sharing one Supabase backend. Auth is optional everywhere: posts are public and editable via a UUID `edit_token` link generated at post time whether or not you're signed in; signing in (email/password, Apple, or Google) just sets `user_id` on new posts so they can be edited without the token.
 
 Deployed at pets.heyitsmejosh.com (Vercel). Backend lives on the shared `spark` Supabase project (ref `tjsxsqlxjmanwvmywwvw`), not a dedicated project, free-tier project limit is maxed, so this project's tables/bucket/RPC just sit alongside spark's own schema.
 
@@ -14,6 +14,7 @@ Deployed at pets.heyitsmejosh.com (Vercel). Backend lives on the shared `spark` 
 - `ios/project.yml`: XcodeGen spec; regenerate the `.xcodeproj` with `xcodegen generate` after changing this or adding new Swift files
 - `ios/Homeward/SupabaseClient.swift`: reads `SUPABASE_URL`/`SUPABASE_ANON_KEY` from process environment (set via Xcode scheme, not a plist)
 - `lib/AuthBar.tsx`: header auth status widget; `app/login`, `app/register`, `app/forgot-password`, `app/reset-password`, Supabase Auth pages. Posting still works anonymously (user_id is null); logged-in posts get `user_id` set and can be edited without the edit_token.
+- `ios/Homeward/AuthView.swift`: iOS/macOS auth (single target, `supportedDestinations: [iOS, macOS]`) — email/password, Apple, Google (`homeward://` redirect scheme), password reset, account deletion via the shared spark `delete-account` Edge Function
 
 ## Conventions
 - No server-side API routes, both clients (web, iOS) talk to Supabase directly.
