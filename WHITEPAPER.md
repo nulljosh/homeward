@@ -4,7 +4,9 @@
 
 A pet goes missing. The neighbourhood should know in minutes.
 
-Homeward is a lost and found board for pets. Post one, find one, mark it resolved.
+Homeward exists because the places people actually post a lost pet, Facebook
+groups and Craigslist, are both account-walled and neither is searchable by
+location or species, which costs exactly the minutes that matter most. It is a lost and found board for pets. Post one, find one, mark it resolved.
 Web plus native apps on a shared Supabase backend. Live at
 [homeward.heyitsmejosh.com](https://homeward.heyitsmejosh.com).
 
@@ -17,18 +19,20 @@ create an account. Any signup step loses the post.
 
 ## No-Auth Posting
 
-There are no accounts. Posting writes a listing and returns a private
+There are no accounts, because the one constraint above rules out the
+standard fix of gating edits behind a login. Posting writes a listing and returns a private
 edit-token link, the same mechanic Craigslist uses. Whoever holds the link can
 edit or resolve the listing; nobody else can, because the token is the
 credential.
 
 Mutation runs through a Postgres RPC (`update_listing`) rather than a direct
-table write, so the token check happens server-side inside the function. A
+table write, so the token check happens server-side inside the function
+instead of trusting a client to enforce it. A
 client that guesses a listing id still cannot mutate it without the token, and
 RLS denies unmediated writes to the table outright.
 
-Resolved listings are marked, not deleted, a found pet is the useful half of
-the record.
+Resolved listings are marked, not deleted, because a found pet is the useful half of
+the record and a record of past resolutions is worth more than a clean table.
 
 ## Data Model
 
@@ -44,11 +48,14 @@ migrate. Photos upload straight to Supabase Storage from the client.
 | iOS | SwiftUI, xcodegen, supabase-swift | Same table, same RPC |
 
 Both clients talk to Supabase directly, there is no intermediate API to keep
-in sync, which is why the token check has to live in the database.
+in sync, because a second server would just be one more place the token check
+could be forgotten, which is why the check has to live in the database.
 
 ## Privacy
 
-No accounts means no user records to leak. A listing carries whatever contact
+No accounts means no user records to leak, the same design choice that
+removed the signup barrier also removes an entire category of thing to
+secure. A listing carries whatever contact
 method the poster chose to publish, and nothing else; the edit token is the
 only secret and it is held by the poster alone.
 
