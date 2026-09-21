@@ -12,6 +12,8 @@ A pet goes missing. The neighbourhood should know in minutes, not days.
 
 Homeward is a lost and found board for pets. Post a missing animal or one you've found, with a photo and where you last saw it. Everyone nearby sees it. Web, plus native apps for iOS, Android, macOS and Windows.
 
+<img src="progress.svg" width="460">
+
 ## Screenshots
 
 <img src="docs/screenshots/web.png" width="600">
