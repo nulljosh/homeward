@@ -1,11 +1,12 @@
 /* House landing style, same shape as numen/bookrank: a drifting wall of the
-   app's own content behind a scrim, then features, install, closing. */
+   app's own content behind a scrim, then features, install, closing.
+   Uses @import of heyitsmejosh.com/tokens.css via globals.css. */
 
 .lp {
-  /* same palette as bookrank's landing */
-  --accent: #5B9BD5; --accent-ink: #ffffff;
-  --link: #42719b; --link-hover: var(--text);
-  --accent-soft: #eaf3fb;
+  /* orchard palette */
+  --accent: var(--clay); --accent-ink: #ffffff;
+  --link: var(--clay-deep); --link-hover: var(--text);
+  --accent-soft: color-mix(in srgb, var(--accent) 9%, var(--bg));
   --lost: #111111; --lost-bg: #FF4136;
   --found: #111111; --found-bg: #2ECC40;
   background: var(--bg);
@@ -14,7 +15,7 @@
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
-@media (prefers-color-scheme: dark) { .lp { --link: #5B9BD5; --accent-soft: #151d26; } }
+@media (prefers-color-scheme: dark) { .lp { --link: var(--clay); --accent-soft: color-mix(in srgb, var(--accent) 9%, var(--bg)); } }
 .lp ::selection { background: var(--accent); color: #fff; }
 .lp .container { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem; }
 
