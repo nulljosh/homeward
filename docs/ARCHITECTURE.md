@@ -31,7 +31,6 @@ CLI (TUI): reads listings from Supabase PostgREST directly, outputs as cards.
 | `lib/supabase.ts` | Supabase client init, Listing type definition |
 | `lib/AuthBar.tsx` | Header auth status: current user email or sign-in link |
 | `lib/OAuthButtons.tsx` | OAuth button group: Apple, Google, GitHub |
-| `lib/share-button.tsx` | Fixed bottom-right share button: navigator.share with clipboard fallback |
 | `lib/webmcp.tsx` | WebMCP tool registration for agents to search listings and resolve posts |
 | `app/globals.css` | Global CSS: imports portfolio tokens and Tailwind, theme variables |
 | `app/landing.css` | Landing page styles: hero wall, features cards, accent colors |

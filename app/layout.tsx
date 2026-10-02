@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import WebMCP from "@/lib/webmcp";
-import ShareButton from "@/lib/share-button";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,7 +43,6 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: "if(location.hostname==='pets.heyitsmejosh.com')location.replace('https://homeward.heyitsmejosh.com'+location.pathname+location.search+location.hash)" }} />
         <WebMCP />
         {children}
-        <ShareButton />
         <script dangerouslySetInnerHTML={{ __html: "if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))" }} />
       </body>
     </html>
