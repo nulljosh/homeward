@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import WebMCP from "@/lib/webmcp";
 import "./globals.css";
@@ -27,6 +27,13 @@ export const metadata: Metadata = {
     url: "https://homeward.heyitsmejosh.com",
   },
   twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f0e4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({
