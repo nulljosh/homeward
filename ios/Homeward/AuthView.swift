@@ -146,6 +146,8 @@ private struct AuthSheet: View {
             }
             _ = try await supabase.auth.signInWithIdToken(credentials: .init(provider: .apple, idToken: token, nonce: appleNonce))
             dismiss()
+        } catch let error as ASAuthorizationError where error.code == .canceled {
+            // The person closed Apple's sheet. That is a choice, not an error.
         } catch {
             self.error = error.localizedDescription
         }
