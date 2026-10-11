@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Homeward <noreply@homeward.heyitsmejosh.com>",
+      from: "Homeward <noreply@homeward.jaybulb.com>",
       to: listing.contact_email,
       subject: `${name} was marked found`,
       text: `Good news — someone marked your listing for ${name} as found on Homeward.`,

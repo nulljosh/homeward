@@ -1,6 +1,6 @@
 import { createClient } from "./spark-client.js";
 
-export const spark = createClient(process.env.NEXT_PUBLIC_API_URL ?? "https://api.heyitsmejosh.com");
+export const spark = createClient(process.env.NEXT_PUBLIC_API_URL ?? "https://api.jaybulb.com");
 
 export type Listing = {
   id: string;

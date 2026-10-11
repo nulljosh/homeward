@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://homeward.heyitsmejosh.com"),
+  metadataBase: new URL("https://homeward.jaybulb.com"),
   manifest: "/manifest.webmanifest",
   alternates: { canonical: "./" },
   title: "Homeward",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "Homeward",
     title: "Homeward",
     description: "Post and find lost or found pets in your area",
-    url: "https://homeward.heyitsmejosh.com",
+    url: "https://homeward.jaybulb.com",
   },
   twitter: { card: "summary_large_image" },
 };
@@ -47,7 +47,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <script dangerouslySetInnerHTML={{ __html: "if(location.hostname==='pets.heyitsmejosh.com')location.replace('https://homeward.heyitsmejosh.com'+location.pathname+location.search+location.hash)" }} />
+        <script dangerouslySetInnerHTML={{ __html: "if(location.hostname==='pets.jaybulb.com')location.replace('https://homeward.jaybulb.com'+location.pathname+location.search+location.hash)" }} />
         <WebMCP />
         {children}
         <script dangerouslySetInnerHTML={{ __html: "if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))" }} />

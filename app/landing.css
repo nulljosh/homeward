@@ -1,6 +1,6 @@
 /* House landing style, same shape as numen/bookrank: a drifting wall of the
    app's own content behind a scrim, then features, install, closing.
-   Uses @import of heyitsmejosh.com/tokens.css via globals.css. */
+   Uses @import of jaybulb.com/tokens.css via globals.css. */
 
 .lp {
   /* orchard palette */
