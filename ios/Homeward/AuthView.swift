@@ -128,7 +128,7 @@ private struct AuthSheet: View {
     private func resetPassword() async {
         error = nil; notice = nil
         do {
-            try await supabase.auth.resetPasswordForEmail(email, redirectTo: URL(string: "https://pets.heyitsmejosh.com/reset-password"))
+            try await supabase.auth.resetPasswordForEmail(email, redirectTo: URL(string: "https://pets.jaybulb.com/reset-password"))
             notice = "Check your email for a reset link."
         } catch {
             self.error = error.localizedDescription

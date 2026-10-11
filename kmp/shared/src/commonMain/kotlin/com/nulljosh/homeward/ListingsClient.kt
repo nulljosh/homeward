@@ -23,7 +23,7 @@ class ListingsClient(private val http: HttpClient = defaultClient()) {
         const val URL = "https://tjsxsqlxjmanwvmywwvw.supabase.co"
         const val ANON_KEY =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqc3hzcWx4am1hbnd2bXl3d3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0OTc0MDEsImV4cCI6MjA4NjA3MzQwMX0.LphLfho3wdQC20MhtcnBpzQUNuBoTOobrugQbNGxc68"
-        const val WEB = "https://homeward.heyitsmejosh.com"
+        const val WEB = "https://homeward.jaybulb.com"
 
         fun defaultClient(): HttpClient = HttpClient {
             install(ContentNegotiation) {
