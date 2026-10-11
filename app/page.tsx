@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type RefObject } from "react";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 import AuthBar from "@/lib/AuthBar";
 import "./landing.css";
 
@@ -112,7 +112,7 @@ export default function Landing() {
   const [closingRef, closingIn] = useRevealOnScroll<HTMLElement>();
 
   useEffect(() => {
-    supabase
+    spark
       .from("listings")
       .select("*")
       .eq("status", "active")

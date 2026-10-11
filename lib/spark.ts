@@ -1,9 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "./spark-client.js";
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+export const spark = createClient(process.env.NEXT_PUBLIC_API_URL ?? "https://api.heyitsmejosh.com");
 
 export type Listing = {
   id: string;

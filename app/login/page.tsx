@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import OAuthButtons from "@/lib/OAuthButtons";
+import { spark } from "@/lib/spark";
 
 export default function Login() {
   const router = useRouter();
@@ -16,7 +15,7 @@ export default function Login() {
     setSubmitting(true);
     setError(null);
     const form = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await spark.auth.signInWithPassword({
       email: form.get("email") as string,
       password: form.get("password") as string,
     });
@@ -28,7 +27,6 @@ export default function Login() {
   return (
     <div className="max-w-sm mx-auto px-4 py-10 font-sans text-sm">
       <h1 className="text-lg font-bold mb-4">log in</h1>
-      <OAuthButtons />
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input name="email" type="email" required placeholder="email" className="border border-zinc-300 rounded px-2 py-1" />
         <input name="password" type="password" required placeholder="password" className="border border-zinc-300 rounded px-2 py-1" />

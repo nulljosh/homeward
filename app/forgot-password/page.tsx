@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { spark } from "@/lib/spark";
 
 export default function ForgotPassword() {
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +13,7 @@ export default function ForgotPassword() {
     setSubmitting(true);
     setError(null);
     const form = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.resetPasswordForEmail(form.get("email") as string, {
+    const { error } = await spark.auth.resetPasswordForEmail(form.get("email") as string, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     setSubmitting(false);
