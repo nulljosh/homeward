@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import OAuthButtons from "@/lib/OAuthButtons";
+import { spark } from "@/lib/spark";
 
 export default function Register() {
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +14,7 @@ export default function Register() {
     setSubmitting(true);
     setError(null);
     const form = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.signUp({
+    const { error } = await spark.auth.signUp({
       email: form.get("email") as string,
       password: form.get("password") as string,
     });
@@ -36,10 +35,9 @@ export default function Register() {
   return (
     <div className="max-w-sm mx-auto px-4 py-10 font-sans text-sm">
       <h1 className="text-lg font-bold mb-4">register</h1>
-      <OAuthButtons />
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input name="email" type="email" required placeholder="email" className="border border-zinc-300 rounded px-2 py-1" />
-        <input name="password" type="password" required minLength={6} placeholder="password" className="border border-zinc-300 rounded px-2 py-1" />
+        <input name="password" type="password" required minLength={8} placeholder="password" className="border border-zinc-300 rounded px-2 py-1" />
         {error && <p className="text-red-600">{error}</p>}
         <button disabled={submitting} className="bg-[#FF851B] text-[#111111] font-semibold rounded px-4 py-2 disabled:opacity-50">
           {submitting ? "creating account..." : "register"}

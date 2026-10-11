@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { spark } from "@/lib/spark";
 
 export default function AuthBar() {
   const [email, setEmail] = useState<string | null | undefined>(undefined);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user.email ?? null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+    spark.auth.getSession().then(({ data }) => setEmail(data.session?.user.email ?? null));
+    const { data: sub } = spark.auth.onAuthStateChange((_event, session) => {
       setEmail(session?.user.email ?? null);
     });
     return () => sub.subscription.unsubscribe();
@@ -21,7 +21,7 @@ export default function AuthBar() {
     return (
       <span className="text-zinc-500">
         {email} ·{" "}
-        <button onClick={() => supabase.auth.signOut()} className="text-[#0074D9] underline">
+        <button onClick={() => spark.auth.signOut()} className="text-[#0074D9] underline">
           log out
         </button>
       </span>

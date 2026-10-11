@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 
 export default function PostListing() {
   const router = useRouter();
@@ -18,13 +18,13 @@ export default function PostListing() {
     let photo_url: string | null = null;
     if (photo) {
       const path = `${crypto.randomUUID()}-${photo.name}`;
-      const { data, error } = await supabase.storage.from("pet-photos").upload(path, photo);
+      const { data, error } = await spark.storage.from("pet-photos").upload(path, photo);
       if (!error && data) {
-        photo_url = supabase.storage.from("pet-photos").getPublicUrl(data.path).data.publicUrl;
+        photo_url = spark.storage.from("pet-photos").getPublicUrl(data.path).data.publicUrl;
       }
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await spark
       .rpc("create_listing", {
         type: form.get("type"),
         species: form.get("species"),

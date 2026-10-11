@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 
 function ListingDetailInner() {
   const id = useSearchParams().get("id");
@@ -12,21 +12,21 @@ function ListingDetailInner() {
 
   useEffect(() => {
     if (!id) return;
-    supabase
+    spark
       .from("listings")
       .select("*")
       .eq("id", id)
       .single()
       .then(({ data }) => setListing(data as Listing));
-    supabase.auth.getSession().then(({ data }) => setLoggedIn(!!data.session));
+    spark.auth.getSession().then(({ data }) => setLoggedIn(!!data.session));
   }, [id]);
 
   async function markFound() {
     if (!id) return;
-    const { data } = await supabase.rpc("resolve_listing", { p_id: id }).single();
+    const { data } = await spark.rpc("resolve_listing", { p_id: id }).single();
     if (!data) return;
     setListing(data as Listing);
-    supabase.functions.invoke("notify-found", { body: { listingId: id } });
+    spark.functions.invoke("notify-found", { body: { listingId: id } });
   }
 
   if (!listing) {

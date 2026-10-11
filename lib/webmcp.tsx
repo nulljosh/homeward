@@ -3,11 +3,11 @@
 // WebMCP tool registration for homeward. Mounted once in app/layout.tsx.
 //
 // ponytail: page state here lives entirely in per-page useState hooks (no
-// context/store), so tools go through the existing Supabase client in
-// lib/supabase.ts instead — the app's real data layer, not a duplicate of it.
+// context/store), so tools go through the existing spark-api client in
+// lib/spark.ts instead — the app's real data layer, not a duplicate of it.
 
 import { useEffect } from "react";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 
 type ToolHandle = { unregister?: () => void };
 
@@ -57,7 +57,7 @@ export default function WebMCP() {
         },
         execute: async (args) => {
           try {
-            let query = supabase.from("listings").select("*").eq("status", "active");
+            let query = spark.from("listings").select("*").eq("status", "active");
             if (args.type === "lost" || args.type === "found") {
               query = query.eq("type", args.type);
             }
@@ -90,7 +90,7 @@ export default function WebMCP() {
         },
         execute: async (args) => {
           try {
-            const { data, error } = await supabase
+            const { data, error } = await spark
               .from("listings")
               .select("*")
               .eq("id", args.id)
@@ -107,11 +107,11 @@ export default function WebMCP() {
     handles.push(
       registerTool({
         name: "whoami",
-        description: "Get the currently signed-in Supabase user, or report signed out.",
+        description: "Get the currently signed-in user, or report signed out.",
         inputSchema: { type: "object", properties: {} },
         execute: async () => {
           try {
-            const { data, error } = await supabase.auth.getSession();
+            const { data, error } = await spark.auth.getSession();
             if (error) return { error: error.message };
             if (!data.session) return { signedIn: false };
             return { signedIn: true, email: data.session.user.email, id: data.session.user.id };
@@ -149,7 +149,7 @@ export default function WebMCP() {
         },
         execute: async (args) => {
           try {
-            const { data, error } = await supabase
+            const { data, error } = await spark
               .rpc("create_listing", {
                 type: args.type,
                 pet_name: args.pet_name ?? null,
@@ -196,7 +196,7 @@ export default function WebMCP() {
         },
         execute: async (args) => {
           try {
-            const { error } = await supabase.rpc("update_listing", {
+            const { error } = await spark.rpc("update_listing", {
               p_id: args.id,
               p_token: args.token,
               p_status: "resolved",

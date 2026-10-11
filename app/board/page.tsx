@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 import AuthBar from "@/lib/AuthBar";
 
 export default function Home() {
@@ -12,22 +12,22 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    supabase
+    spark
       .from("listings")
       .select("*")
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .then(({ data }) => setListings((data as Listing[]) ?? []));
-    supabase.auth.getSession().then(({ data }) => setLoggedIn(!!data.session));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setLoggedIn(!!session));
+    spark.auth.getSession().then(({ data }) => setLoggedIn(!!data.session));
+    const { data: sub } = spark.auth.onAuthStateChange((_e, session) => setLoggedIn(!!session));
     return () => sub.subscription.unsubscribe();
   }, []);
 
   async function markFound(id: string) {
-    const { data } = await supabase.rpc("resolve_listing", { p_id: id }).single();
+    const { data } = await spark.rpc("resolve_listing", { p_id: id }).single();
     if (!data) return;
     setListings((prev) => prev.filter((l) => l.id !== id));
-    supabase.functions.invoke("notify-found", { body: { listingId: id } });
+    spark.functions.invoke("notify-found", { body: { listingId: id } });
   }
 
   const filtered = listings.filter((l) => {

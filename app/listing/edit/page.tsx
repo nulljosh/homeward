@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { supabase, Listing } from "@/lib/supabase";
+import { spark, Listing } from "@/lib/spark";
 
 export default function EditListing() {
   return (
@@ -19,7 +19,7 @@ function EditListingForm() {
 
   useEffect(() => {
     if (!token) return;
-    supabase
+    spark
       .rpc("listing_by_token", { p_token: token })
       .single()
       .then(({ data }) => setListing(data as Listing));
@@ -27,7 +27,7 @@ function EditListingForm() {
 
   async function markResolved() {
     if (!listing || !token) return;
-    await supabase.rpc("update_listing", {
+    await spark.rpc("update_listing", {
       p_id: listing.id,
       p_token: token,
       p_status: "resolved",

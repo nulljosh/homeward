@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { spark } from "@/lib/spark";
 
 export default function ResetPassword() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function ResetPassword() {
     setSubmitting(true);
     setError(null);
     const form = new FormData(e.currentTarget);
-    const { error } = await supabase.auth.updateUser({
+    const { error } = await spark.auth.updateUser({
       password: form.get("password") as string,
     });
     setSubmitting(false);
