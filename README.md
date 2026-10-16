@@ -4,7 +4,7 @@
 
 ![version](https://img.shields.io/badge/version-v0.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fhomeward-black?logo=github)](https://github.com/nulljosh/homeward)
 
-**Live:** https://homeward.heyitsmejosh.com
+**Live:** https://homeward.jaybulb.com
 
 **Terminal:** `swift build && ./.build/debug/homeward-tui` — see [tui/](tui/)
 
